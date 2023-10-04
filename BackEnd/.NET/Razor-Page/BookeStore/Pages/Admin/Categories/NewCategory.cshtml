@@ -1,0 +1,64 @@
+﻿@page
+@model BookStore.Pages.Admin.Products.Category.NewCategoryModel
+@{
+    ViewData["Title"] = "Admin - Thêm thể loại";
+}
+
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="col-lg-6 mt-5">
+    <div class="mb-3">
+        @{
+            string linkCurrent = Url.RouteUrl(ViewContext.RouteData.Values);
+            var e = linkCurrent.Split("/");
+            var l = "";
+            foreach (var i in e)
+            {
+                if (i != "")
+                {
+                    l += @i + "/";
+                    <a class="Breadcrumb" href="/@l">/@i</a>
+                }
+            }
+        }
+    </div>
+
+
+    <div class="row">
+        <form method="post" enctype="multipart/form-data">
+
+            <h5>Thêm thể loại sách:</h5>
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.CategoryName" class="form-control" aria-required="true" />
+                <label asp-for="Input.CategoryName" class="form-label"></label>
+                <span asp-validation-for="Input.CategoryName" class="text-danger"></span>
+            </div>
+
+          
+            <textarea asp-for="Input.Description" class="form-control mb-3" aria-required="true" rows="4" cols="50" placeholder="Miêu tả"></textarea>
+            <span asp-validation-for="Input.Description" class="text-danger"></span>
+
+            <input type="file" name="postedFiles" class="form-control mb-3" multiple onchange="loadFile(event)" />
+
+            <img id="output" style="max-width: 200px; /* Kích thước tối đa của ảnh */
+                                    max-height: 200px;
+                                    width: auto;
+                                    height: auto;" />
+            <hr />
+
+            <input type="submit" class="btn btn-info" value="Thêm"/>
+        </form>
+
+        
+        <script>
+            var loadFile = function (event) {
+                var output = document.getElementById('output');
+                output.src = URL.createObjectURL(event.target.files[0]);
+                output.onload = function () {
+                    URL.revokeObjectURL(output.src) 
+                }
+            };
+        </script>
+    </div>
+</div>

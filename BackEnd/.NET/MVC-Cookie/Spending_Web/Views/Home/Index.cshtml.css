@@ -1,0 +1,15 @@
+﻿#analysisRevenue{
+    position: absolute;
+    top:10%;
+}
+
+#analysisSpend {
+    position: absolute;
+    top: 50%;
+}
+
+#chartPie {
+    position: absolute;
+    top: 20%;
+    left: 60%;  
+}

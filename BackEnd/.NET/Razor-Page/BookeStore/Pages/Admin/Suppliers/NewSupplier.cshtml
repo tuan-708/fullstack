@@ -1,0 +1,103 @@
+﻿@page
+@model BookStore.Pages.Admin.Products.Supplier.NewSupplierModel
+@{
+    ViewData["Title"] = "Admin - Thêm nhà cung cấp";
+}
+
+<div class="col-lg-6 mt-5">
+    <partial name="_StatusMessage" for="StatusMessage"/>
+
+    <div class="mb-3">
+        @{
+            string linkCurrent = Url.RouteUrl(ViewContext.RouteData.Values);
+            var e = linkCurrent.Split("/");
+            var l = "";
+            foreach (var i in e)
+            {
+                if (i != "")
+                {
+                    l += @i + "/";
+                    <a class="Breadcrumb" href="/@l">/@i</a>
+                }
+            }
+        }
+    </div>
+
+
+    <div class="row">
+        <form method="post" enctype="multipart/form-data">
+
+            <h5>Thêm thể loại sách:</h5>
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.CompanyName" class="form-control" aria-required="true" />
+                <label asp-for="Input.CompanyName" class="form-label"></label>
+                <span asp-validation-for="Input.CompanyName" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.ContactName" class="form-control" aria-required="true" />
+                <label asp-for="Input.ContactName" class="form-label"></label>
+                <span asp-validation-for="Input.ContactName" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.ContactTitle" class="form-control" aria-required="true" />
+                <label asp-for="Input.ContactTitle" class="form-label"></label>
+                <span asp-validation-for="Input.ContactTitle" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Address" class="form-control" aria-required="true" />
+                <label asp-for="Input.Address" class="form-label"></label>
+                <span asp-validation-for="Input.Address" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.City" class="form-control" aria-required="true" />
+                <label asp-for="Input.City" class="form-label"></label>
+                <span asp-validation-for="Input.City" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Region" class="form-control" aria-required="true" />
+                <label asp-for="Input.Region" class="form-label"></label>
+                <span asp-validation-for="Input.Region" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.PostalCode" class="form-control" aria-required="true" />
+                <label asp-for="Input.PostalCode" class="form-label"></label>
+                <span asp-validation-for="Input.PostalCode" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Country" class="form-control" aria-required="true" />
+                <label asp-for="Input.Country" class="form-label"></label>
+                <span asp-validation-for="Input.Country" class="text-danger"></span>
+            </div>
+
+             <div class="form-floating mb-3">
+                <input asp-for="Input.Phone" class="form-control" aria-required="true" />
+                <label asp-for="Input.Phone" class="form-label"></label>
+                <span asp-validation-for="Input.Phone" class="text-danger"></span>
+            </div>
+
+             <div class="form-floating mb-3">
+                <input asp-for="Input.Fax" class="form-control" aria-required="true" />
+                <label asp-for="Input.Fax" class="form-label"></label>
+                <span asp-validation-for="Input.Fax" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.HomePage" class="form-control" aria-required="true" />
+                <label asp-for="Input.HomePage" class="form-label"></label>
+                <span asp-validation-for="Input.HomePage" class="text-danger"></span>
+            </div>
+
+
+
+            <input type="submit" class="btn btn-info" value="Thêm" />
+        </form>
+    </div>
+</div>

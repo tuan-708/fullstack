@@ -1,0 +1,66 @@
+﻿@page
+@model StoreManagement.Pages.Admin.Users.Roles.IndexModel
+@{
+    ViewData["Title"] = "Admin - Danh sách vai trò";
+}
+
+@section Styles {
+    <link href="@Url.Content("~/admin/css/admin.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/admin/css/admin-roles.css")" rel="stylesheet" type="text/css" />
+}
+
+<partial name="_StatusMessage" for="StatusMessage"/>
+<div class="row mt-3">
+    <div class="col-md-12">
+
+        <div class="mb-3">
+            @{
+                string linkCurrent = Url.RouteUrl(ViewContext.RouteData.Values);
+                var e = linkCurrent.Split("/");
+                var l = "";
+                foreach (var i in e)
+                {
+                    if (i != "")
+                    {
+                        l += @i + "/";
+                        <a class="Breadcrumb" href="/@l">/@i</a>
+                    }
+                }
+            }
+        </div>
+
+
+        <div class="row">
+            <a class="btn btn-secondary ms-lg-2 col-2 align-items-lg-end" asp-page="./NewUserRole">Tạo role mới</a>
+        </div>
+        
+        <div class="talbeContent">
+            <table class="mt-4">
+                <tr>
+                    <th>Tên Role (Vai trò)</th>
+                    <th>Tác vụ</th>
+                </tr>
+
+                @if(Model.roles.Count() > 0)
+                {
+                    @foreach (var role in Model.roles)
+                    {
+                        <tr>
+                            <td>@role.Name</td>
+                            <td class="text-center">
+                                <div class="d-flex">
+                                    <a class="btn btn-primary ms-lg-2 align-items-lg-end" asp-page="./UpdateRoleUser" asp-route-roleid="@role.Id">Cập nhập</a>
+                                    <form method="post">
+                                        <input type="hidden" name="rid" value="@role.Id">
+                                        <button type="submit" onclick="return confirm('Bạn có muốn xóa vai trò: @role.Name ');" class="ms-lg-2 btn btn-danger">Xóa</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+</div>
+

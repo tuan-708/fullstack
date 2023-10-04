@@ -1,0 +1,47 @@
+﻿.admin-menu
+{
+    background-color:darkgray;
+}
+
+.ContentAdmin {
+    background-color: gainsboro;
+    margin: 50px;
+    border-radius: 10px;
+    padding: 10px;
+    height: 85vh;
+    box-shadow: 0px 10px 15px -5px #000000;
+}
+
+.admin-menu{
+    border-radius:10px;
+}
+
+.admin-menu h5{
+    margin-left: 20px;
+    padding: 5px;
+}
+
+.admin-menu ul{
+    list-style-type: none;
+    padding:0px;
+}
+
+.admin-menu li {
+    padding: 10px;
+    
+}
+
+.admin-menu li:hover{
+    background-color:bisque;
+    cursor:pointer;
+}
+
+    .admin-menu a {
+        text-decoration: none;
+        color: #808080;
+        font-weight: 400;
+        border-radius: 5px;
+    }
+
+
+

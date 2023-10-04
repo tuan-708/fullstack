@@ -1,0 +1,3 @@
+{
+  "ConnectionString": { "MyDB": "server=(local); database=Spending_Management;user=sa;password=123;Integrated Security=true;TrustServerCertificate=Yes" },
+}

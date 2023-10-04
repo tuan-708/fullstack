@@ -1,0 +1,153 @@
+﻿@page
+@model BookStore.Pages.Admin.Orders.IndexModel
+@{
+    ViewData["Title"] = "Admin - Chi tiết đơn hàng";
+}
+
+@section Styles {
+    <link href="@Url.Content("~/admin/css/admin.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/admin/css/admin-roles.css")" rel="stylesheet" type="text/css" />
+}
+
+
+
+<partial name="_StatusMessage" for="StatusMessage"/>
+<div class="row mt-3">
+    <div class="col-md-12">
+        <div class="mb-3">
+            @{
+                string linkCurrent = Url.RouteUrl(ViewContext.RouteData.Values);
+                var e = linkCurrent.Split("/");
+                var l = "";
+                foreach (var i in e)
+                {
+                    if (i != "")
+                    {
+                        l += @i + "/";
+                        <a class="Breadcrumb" href="/@l">/@i</a>
+                    }
+                }
+            }
+        </div>
+
+     
+        <form method="get" enctype="multipart/form-data">
+            <div class="row d-flex mb-5">
+                
+
+                <div class="col-2">
+                    <label asp-for="Input.Status" class="form-label"></label>
+                    <select class="form-control selectSupplier" asp-for="Input.Status">
+                        <option value="Xử lý">Xử lý</option>
+                        <option value="Đang giao">Đang giao</option>
+                        <option value="Đã giao">Đã giao</option>
+                        <option value="Đã hủy">Đã hủy</option>
+                    </select>
+                    <span asp-validation-for="Input.Status" class="text-danger"></span>
+                </div>
+
+                <div class="col-2">
+                    <label asp-for="Input.OrderByDaybyMonth" class="form-label"></label>
+                    <select class="form-control selectSupplier" asp-for="Input.OrderByDaybyMonth">
+                        <option value="Hôm nay">Hôm nay</option>
+                        <option value="1 tuần này">1 Tuần này</option>
+                        <option value="1 tháng này">1 Tháng này</option>
+                    </select>
+                    <span asp-validation-for="Input.OrderByDaybyMonth" class="text-danger"></span>
+                </div>
+
+                <div class="col-2 d-flex align-items-end">
+                    <input type="submit" class="btn btn-info" value="Lọc" />
+                </div>
+
+            </div>
+
+        </form>
+
+
+        <div class="row">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    Danh sách thể loại
+                </div>
+                <div class="card-body">
+                    <table id="datatablesSimple">
+                        <thead>
+                            <tr>
+                                <th>Mã đơn hàng</th>
+                                <th>Email</th>
+                                <th>Ngày đặt hàng</th>
+                                <th>Ngày giao hàng</th>
+                                <th>Ngày nhận</th>
+                                <th>Đơn vị ship</th>
+                                <th>Trị giá</th>
+                                <th>Tên người giao</th>
+                                <th>Địa chỉ giao</th>
+                                <th>trạng thái</th>
+                                <th>Tác vụ</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Mã đơn hàng</th>
+                                <th>Email</th>
+                                <th>Ngày đặt hàng</th>
+                                <th>Ngày giao hàng</th>
+                                <th>Ngày nhận</th>
+                                <th>Đơn vị ship</th>
+                                <th>Trọng lượng</th>
+                                <th>Tên người giao</th>
+                                <th>Địa chỉ giao</th>
+                                <th>trạng thái</th>
+                                <th>Tác vụ</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            @foreach (var order in Model.Orders)
+                            {
+                                <tr>
+                                    <td>@order.OrderId</td>
+                                    <td>@order.User.Email</td>
+                                    <td>@order.OrderDate</td>
+                                    <td>@order.RequiredDate</td>
+                                    <td>@order.ShippedDate</td>
+                                    <td>@order.ShipVia</td>
+                                    <td>@String.Format("{0:#,##0}",@order.Freight) VNĐ</td>
+                                    <td>@order.ShipName</td>
+                                    <td>@order.ShipAddress</td>
+                                    <td>
+                                        @if (order.Status != null)
+                                        {
+                                            var checkStatus = "";
+                                            if (order.Status == "Xử lý") checkStatus = "warning";
+                                            if (order.Status == "Đang giao") checkStatus = "info";
+                                            if (order.Status == "Đã giao") checkStatus = "success";
+                                            if (order.Status == "Đã hủy") checkStatus = "danger";
+
+
+                                            <div class="text-@checkStatus">
+                                                @order.Status
+                                            </div>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex">
+                                            <a class="btn btn-primary ms-lg-2 align-items-lg-end" asp-page="./UpdateOrder" asp-route-oid="@order.OrderId">Chỉnh sửa</a>
+
+                                            <form method="post">
+                                                <input type="hidden" name="oid" value="@order.OrderId">
+                                                <button type="submit" onclick="return confirm('Bạn có muốn xóa đơn hàng @order.OrderId');" class="ms-lg-2 btn btn-danger">Xóa</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

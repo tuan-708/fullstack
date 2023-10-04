@@ -1,0 +1,120 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Trang chủ";
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" rel="stylesheet" />
+
+<div class="flex-row">
+    <div class="slider">
+        <div id="banner" class="banner">
+            <div class="col-7">
+                <h2>Chi ân khách hàng</h2>
+                <p>Khuyến mại lên tới 50%</p>
+                <div>
+                    <a rel="noreferrer noopener noreferrer" class="Slideshow_ctaBtn__xcyon" target="_blank" href="#">Xem chi tiết</a>
+                </div>
+            </div>
+            <div class="col-5">
+                <img alt="" src="/image/panner1.png" />
+            </div>
+        </div>
+
+        <div id="banner" class="banner">
+            <div class="col-7">
+                <h2>Những sản phẩm mới khuyến mại</h2>
+                <p>Chi ân khách hàng mới</p>
+                <div>
+                    <a rel="noreferrer noopener noreferrer" class="Slideshow_ctaBtn__xcyon" target="_blank" href="#">Chi tiết tại}</a>
+                </div>
+            </div>
+            <div class="col-5">
+                <img alt="" src="/image/panner2.png" />
+            </div>
+        </div>
+        <div id="banner" class="banner">
+            <div class="col-7">
+                <h2>Vourcher giảm giả</h2>
+                <p>Những sản phẩm giảm giá lên tới 10,20,30%</p>
+                <div>
+                    <a rel="noreferrer noopener noreferrer" class="Slideshow_ctaBtn__xcyon" target="_blank" href="#">Xem chi tiết</a>
+                </div>
+            </div>
+            <div class="col-5">
+                <img alt="" src="/image/panner3.png" />
+            </div>
+        </div>
+        <div id="banner" class="banner">
+            <div class="col-7">
+                <h2>Những sách được yêu thích nhất</h2>
+                <p>Sản phẩm được xếp hạng cao nhất</p>
+                <div>
+                    <a rel="noreferrer noopener noreferrer" class="Slideshow_ctaBtn__xcyon" target="_blank" href="#">Xem chi tiết</a>
+                </div>
+            </div>
+            <div class="col-5 rounded-top">
+                <img alt="" src="/image/panner4.png" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $('.slider').slick({
+        arrows: true,
+        infinite: true,
+        speed: 1000,
+        autoplay: true,
+        autoplaySpeed: 2000,
+        fade: true,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        dots: true,
+        //prevArrow: "<i class='fa-solid fa-circle-chevron-left'></i>",
+        //nextArrow: "<i class='fa-solid fa-circle-chevron-right'></i>"
+    });
+</script>
+
+<h5 class="ProCourses_pro-courses-list-title">Sản phẩm mới<span class="ScrollList_label">Mới</span></h5>
+<section class="CourseList">
+    <div class="ProCourses_wrapper col-12">
+        <div class="ProCourses_pro-course-items">
+            <div class="leaning_paths">
+                @foreach(var p in Model.products)
+                {
+                    <section>
+                        <div class="ProCourses_inner">
+                            <a target="" href=" /Product/?pid=@p.ProductId">
+                                <div class="ProCourses_thumb ProCourses_has-link">
+                                    <img class="ProCourses_thumb-img"
+                                         src="/uploads/@p.ProductImages.ElementAt(0).ProductImage1"
+                                         alt="Product">
+                                </div>
+                            </a>
+
+                            <div class="ProCourses_info">
+                                <h2 class="ProCourses_title"><a target="" href="/Product/?pid=@p.ProductId">@p.ProductName</a></h2>
+                                <div class="ProCourses_price">
+                                    <p>@String.Format("{0:#,##0}", p.UnitPrice) VNĐ</p>
+                                </div>
+                            </div>
+                            <div class="Animation_Button">  
+                                <button class="Button_btn__SeeMore">
+                                    <a target="" href="/Product/?pid=@p.ProductId">Xem chi tiết</a>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+
+

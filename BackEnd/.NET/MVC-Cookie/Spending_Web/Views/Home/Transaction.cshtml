@@ -1,0 +1,380 @@
+﻿@using Spending_Web.Models; 
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+
+<div class="View-Transaction">
+    <div class="Content-Left">
+        <div class="Head-Content-Left">
+            <div class="Form-Analysis-Transaction">
+
+                <div class="Field-From">
+                    <span>Total Revenue:</span>
+                    <input type="text" id="total-revenue" disabled>
+                </div>
+
+                <div class="Field-From">
+                    <span>Total Spend:</span>
+                    <input type="text" id="total-spend" disabled>
+                </div>
+
+                <div class="Field-From">
+                    <span>Total Remaining:</span>
+                    <input type="text" id="total-remaining" disabled>
+                </div>
+            </div>
+        </div>
+
+        <div class="Table-Content">
+            <table id="tableRevenue" class="Table-Content-Data">
+                <tr>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Category Spend</th>
+                    <th>Description</th>
+                </tr>
+                @foreach (var transaction in ViewData["listTransactionRevene"] as List<TransactionRevenue>)
+                {
+                    <tr>
+                        <td class="Id">@transaction.Id</td>
+                        <td>@transaction.DateRevenue</td>
+                        <td>@Decimal.Round(transaction.Amount, 0)</td>
+                        <td>@transaction.CategoryRevenue</td>
+                        <td class="Description">@transaction.Description</td>   
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+    <div class="Content-Right">
+        <div class="Head-Content-Right">
+            <div class="Form-Save-Transaction">
+                <form asp-controller="Home" asp-action="SaveTransaction" method="post">
+                    <div class="Field-From">
+                        <span>Type Category:</span>
+                        <select name="TypeCategory" id="type-category" onchange="onchangeTypeCategory()">
+                            <option value="Category Revenue">Category Revenue</option>
+                            <option value="Category Spend">Category Spend</option>
+                        </select>
+                    </div>
+
+                    <div class="Field-From">
+                        <span>Category:</span>
+                        <select name="CategoryRevenue" id="category-revene">
+                            @foreach (var category in ViewData["categoryRevenues"] as List<CategoryRevenue>)
+                            {
+                                <option value="@category.Category">@category.Category</option>
+                            }
+                        </select>
+
+                        <select name="CategorySpend" id="category-spend">
+                            @foreach (var category in ViewData["categorySpends"] as List<CategorySpend>)
+                            {
+                                <option value="@category.Category">@category.Category</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="Field-From">
+                        <span>Date:</span>
+                        <input name="Date" type="datetime-local" min="2018-06-07T00:00">
+                    </div>
+
+                    <div class="Field-From">
+                        <span>Amount:</span>
+                        <input name="Amount" type="number" min="0" max="1000000000000" step="10000" value="0" />
+                    </div>
+
+                    <div class="Field-From">
+                        <span>Description:</span>
+                        <input name="Description" type="text">
+                    </div>
+
+                    <input class="Btn-Save" type="submit" value="Save">
+                </form>
+            </div>
+
+            
+            <form method="POST"  asp-controller="Home" asp-action="TransactionsFilter">
+                <div class="Form-Filter">
+                    <label class="container">
+                        30 Day
+                        <input type="radio" value="30day" @((string)ViewData["filter"] == "30day" ? "checked" : "") name="radio" onclick="this.form.submit()">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="container">
+                        To Day
+                        <input type="radio" value="today" @((string)ViewData["filter"] == "today" ? "checked" : "") name="radio" onclick="this.form.submit()">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="container">
+                        This Week
+                        <input type="radio" value="thisWeek" @((string)ViewData["filter"] == "thisWeek" ? "checked" : "") name="radio" onclick="this.form.submit()">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="container">
+                        This Month
+                        <input type="radio" value="thisMonth" @((string)ViewData["filter"] == "thisMonth" ? "checked" : "") name="radio" onclick="this.form.submit()">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </form>
+        </div>
+
+        <div class="Table-Content">
+            <table id="tableSpend" class="Table-Content-Data">
+                <tr>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Category Spend</th>
+                    <th>Description</th>
+                </tr>
+                @foreach (var transaction in ViewData["listTransactionSpend"] as List<TransactionSpend>)
+                {
+                    <tr>
+                        <td class="Id">@transaction.Id</td>
+                        <td>@transaction.DateSpend</td>
+                        <td>@Decimal.Round(transaction.Amount, 0)</td>
+                        <td>@transaction.CategorySpend</td>
+                        <td>@transaction.Description</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+    <!-- The Modal Update Transaction Revenue -->
+    <div id="ModalUpdateTransactionRevenue" class="modalUpdateTransactionRevenue">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h5>Form Update/Delete Transaction Revenue</h5>
+            <form method="post" asp-action="UpdateTransactionRevenue" asp-controller="Home">
+                <div>
+                    <div class="Field-From">
+                        <span>Id:</span>
+                        <input id="e-id-revenue" name="Id" type="text" readonly>
+                    </div>
+
+                    <div class="Field-From">
+                        <span>Type Category:</span>
+                        <p>Category Revenue</p>
+                    </div>
+
+                    <div class="Field-From">
+                        <span>Category:</span>
+                        <select id="e-category-revene" name="CategoryRevenue">
+                            @foreach (var category in ViewData["categoryRevenues"] as List<CategoryRevenue>)
+                            {
+                                <option value="@category.Category">@category.Category</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="Field-From">
+                        <span>Date:</span>
+                        <input id="e-date-revenue" name="DateRevenue" type="datetime-local" min="2018-06-07T00:00">
+                    </div>
+
+                    <div class="Field-From">
+                        <span>Amount:</span>
+                        <input id="e-amount-revenue" name="Amount" type="number" min="0" max="1000000000000" step="10000" value="0" />
+                    </div>
+
+                    <div class="Field-From">
+                        <span>Description:</span>
+                        <input id="e-description-revenue" name="Description" type="text">
+                    </div>
+
+                    <div class="Field-From">
+                        <input class="Btn-Update" type="submit" value="Edit">
+
+                        <a id="delete-transaction-revenue" class="Btn-Delete" href="#">Delete</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- The Modal Update Transaction Spend -->
+    <div id="ModalUpdateTransactionSpend" class="modalUpdateTransactionSpend">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h5>Form Update/Delete Transaction Spend</h5>
+            <form method="post" asp-action="EditTransactionSpend" asp-controller="Home">
+                <div>
+                    <div class="Field-From">
+                        <span>Id:</span> 
+                        <input id="e-id-spend" name="Id" type="text" readonly>
+                    </div>
+
+                    <div class="Field-From">
+                        <span>Type Category:</span>
+                        <p>Category Spend</p>
+                    </div>
+
+                    <div class="Field-From">
+                        <span>Category:</span>
+                        <select id="e-category-spend" name="CategorySpend">
+                            @foreach (var category in ViewData["categorySpends"] as List<CategorySpend>)
+                            {
+                                <option value="@category.Category">@category.Category</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="Field-From">
+                        <span>Date:</span>
+                        <input id="e-date-spend" name="DateSpend" type="datetime-local" min="2018-06-07T00:00">
+                    </div>
+
+                    <div class="Field-From">
+                        <span>Amount:</span>
+                        <input id="e-amount-spend" name="Amount" type="number" min="0" max="1000000000000" step="10000" value="0" />
+                    </div>
+
+                    <div class="Field-From">
+                        <span>Description:</span>
+                        <input id="e-description-spend" name="Description" type="text">
+                    </div>
+
+                    <div class="Field-From">
+                        <input class="Btn-Update" type="submit" value="Update">
+
+                        <a id="delete-transaction-spend" class="Btn-Delete" href="#">Delete</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    //Thay đổi category khi click vào combobox
+    function onchangeTypeCategory() {
+        var x = document.getElementById("type-category").value;
+        if (x === "Category Revenue"){
+            var y = document.getElementById("category-revene")
+            y.style.display = 'block';
+
+            var z = document.getElementById("category-spend")
+            z.style.display = 'none';
+        }else{
+            var y = document.getElementById("category-revene")
+            y.style.display = 'none';
+
+            var z = document.getElementById("category-spend")
+            z.style.display = 'block';
+        }
+    }
+
+    // Thay đổi giá trị totalRevenue, totalSpend, total Remaining
+    let totalRevenue = document.getElementById("total-revenue");
+    let totalSpend = document.getElementById("total-spend");
+    let totalRemaining = document.getElementById("total-remaining");
+
+   
+    var listTransactionRevene = @Html.Raw(Json.Serialize(ViewData["listTransactionRevene"]));
+
+    const sumRevenue = listTransactionRevene.reduce((accumulator, object) => {
+        return accumulator + object.amount;
+    }, 0);
+
+    var listTransactionSpend = @Html.Raw(Json.Serialize(ViewData["listTransactionSpend"]));
+
+    const sumSpend = listTransactionSpend.reduce((accumulator, object) => {
+        return accumulator + object.amount;
+    }, 0);
+
+    const sumRemaining = sumRevenue - sumSpend;
+
+    totalRevenue.value = sumRevenue;
+    totalSpend.value = sumSpend;
+    totalRemaining.value = sumRemaining;
+
+
+    // Get the modal
+    var modalRevenue = document.getElementById("ModalUpdateTransactionRevenue");
+
+    // Get the <span> element that closes the modal
+    var inconCloseModalRevenue = document.getElementsByClassName("close")[0];
+
+    // Get the modal
+    var modalSpend = document.getElementById("ModalUpdateTransactionSpend");
+
+    // Get the <span> element that closes the modal
+    var iconCloseModalSpend = document.getElementsByClassName("close")[1];
+
+
+    // When the user clicks on <span> (x), close the modal
+    inconCloseModalRevenue.onclick = function () {
+        modalRevenue.style.display = "none";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    iconCloseModalSpend.onclick = function () {
+        modalSpend.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modalRevenue || event.target == modalSpend) {
+            modalRevenue.style.display = "none";
+            modalSpend.style.display = "none";
+        }
+    }
+
+    
+    // click to pass value modal revenue
+    var tableRevenue = document.getElementById('tableRevenue');
+    for (var i = 0; i < tableRevenue.rows.length; i++) {
+        tableRevenue.rows[i].onclick = function () {
+            modalRevenue.style.display = "block";
+
+            document.getElementById('e-id-revenue').value = this.cells[0].innerHTML;
+            document.getElementById('e-category-revene').value = this.cells[3].innerHTML;
+            document.getElementById('e-date-revenue').value = datetimeLocal(this.cells[1].innerHTML);
+            document.getElementById('e-amount-revenue').value = this.cells[2].innerHTML;
+            document.getElementById('e-description-revenue').value = this.cells[4].innerHTML;
+
+            document.getElementById("delete-transaction-revenue").href = "/Home/DeleteTransactionRevenue?id=" + this.cells[0].innerHTML;
+
+
+            function datetimeLocal(datetime) {
+                const dt = new Date(datetime);
+                dt.setMinutes(dt.getMinutes() - dt.getTimezoneOffset());
+                return dt.toISOString().slice(0, 16);
+            }
+        }
+    }
+
+    // click to pass value modal spend
+    var tableSpend = document.getElementById('tableSpend');
+    for (var i = 0; i < tableSpend.rows.length; i++) {
+        tableSpend.rows[i].onclick = function () {
+            modalSpend.style.display = "block";
+
+            document.getElementById('e-id-spend').value = this.cells[0].innerHTML;
+            document.getElementById('e-category-spend').value = this.cells[3].innerHTML;
+            document.getElementById('e-date-spend').value = datetimeLocal(this.cells[1].innerHTML);
+            document.getElementById('e-amount-spend').value = this.cells[2].innerHTML;
+            document.getElementById('e-description-spend').value = this.cells[4].innerHTML;
+
+            document.getElementById("delete-transaction-spend").href = "/Home/DeleteTransactionSpend?id=" + this.cells[0].innerHTML;
+
+            function datetimeLocal(datetime) {
+                const dt = new Date(datetime);
+                dt.setMinutes(dt.getMinutes() - dt.getTimezoneOffset());
+                return dt.toISOString().slice(0, 16);
+            }
+        }
+    }
+
+
+</script>

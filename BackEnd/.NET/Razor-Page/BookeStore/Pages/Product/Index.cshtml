@@ -1,0 +1,63 @@
+﻿@page "/Product/{pid?}"
+@model BookStore.Pages.Product.IndexModel
+@{
+    ViewData["Title"] = "Sách "+Model.Product.ProductName;
+}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+<div class="row">
+    <div class="col-4">
+       <div>
+            <img id="ImageCurrent" src="/uploads/@Model.Product.ProductImages.ElementAt(0).ProductImage1" style="max-width: 300px; max-height: 300px; width: auto; height: auto; margin: 10px;"></img>
+       </div>
+        <div id="images" class="gridImge">
+            @if (Model.Product.ProductImages.Count > 0)
+            {
+                @foreach (var i in Model.Product.ProductImages)
+                {
+                    <img onclick="clickImge(this)" src="/uploads/@i.ProductImage1" style="max-width: 100px; max-height: 100px; width: auto; height: auto; margin: 10px;"></img>
+                }
+            }
+
+        </div>
+    </div>
+
+    <div class="col-8">
+        <p id="pId" hidden>@Model.Product.ProductId</p>
+        <h3>@Model.Product.ProductName</h3>
+        <p class="item-product">Giá sản phẩm: <strong>@String.Format("{0:#,##0}", @Model.Product.UnitPrice) VNĐ</strong></p>
+        <p class="item-product">Sản phẩm còn: <strong id="UnitInStock">@(Model.Product.UnitsInStock)</strong></p>
+        <p class="item-product">Thế loại: <strong>@(Model.Product.Category.CategoryName)</strong></p>
+        <p class="item-product">Nhà cung cấp: <strong>@(Model.Product.Supplier.CompanyName)</strong></p>
+        <p class="item-product">Tác giả: <strong>@(Model.Product.Author)</strong></p>
+        <div class="row">
+@*            addToCart(@Model.Product.ProductId)*@
+            <button type="button" class="btn btn-danger ms-lg-4 col-4 align-items-lg-end mb-3" data-id="@Model.Product.ProductId" onclick="return addToCart(@Model.Product.ProductId)">Thêm vào giỏ hàng</button>
+        </div>
+    </div>
+</div>
+<hr/>
+<div id="describe" class="col-12">
+    @Html.Raw(Model.Product.Describe)
+</div>
+
+<script>
+    let img = null;
+
+    function clickImge(obj){
+        if(img != null){
+            img.style = "border: none; max-width: 100px; max-height: 100px; width: auto; height: auto; margin: 10px;";
+        }
+
+        obj.style = "border: 1px solid #b1154a; max-width: 100px; max-height: 100px; width: auto; height: auto; margin: 10px;";
+        document.getElementById("ImageCurrent").src = obj.src;
+        img = obj;
+    }
+</script>
+

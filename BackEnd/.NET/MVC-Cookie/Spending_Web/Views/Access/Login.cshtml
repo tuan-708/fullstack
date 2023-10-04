@@ -1,0 +1,62 @@
+﻿@model Spending_Web.Models.Account;
+
+@{
+    Layout = "";
+    ViewData["Title"] = "Login Page";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Spending_Web</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Spending_Web.styles.css" asp-append-version="true" />
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+</head>
+<body>
+    <div class="container">
+        <main role="main" class="pb-3">
+
+            <div class="login">
+                <div class="header-content">
+                    <a class="active" href="/Access/Login"> sign in </a>
+
+                    <a class="nonactive" href="/Access/Register"> sign up </a>
+                </div>
+
+                <div class="form-login">
+                    <form asp-controller="Access" asp-action="Login" method="post">
+                        <div class="lable-input">username</div>
+                        <input type="text" class="input-value" name="AccountName"/>
+                     
+                        <br>
+
+                        <br>
+                        <div class="lable-input">Password</div>
+                        <input type="password" class="input-value" name="Password">
+                        <br>
+
+                        <input type="checkbox" id="checkbox-1-1" class="custom-checkbox" name="KeepLoggedIn" />
+                        <label for="checkbox-1-1">Keep me Signed in</label>
+
+                        <button type="submit" class="signin">
+                            Sign In
+                        </button>
+                        <hr>
+                        @if (ViewData["ValidateMessage"] != null)
+                        {
+                            <label class="notation">@ViewData["ValidateMessage"]</label>
+                        }
+                        
+                    </form>
+
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
+

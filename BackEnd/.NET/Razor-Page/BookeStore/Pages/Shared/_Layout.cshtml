@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/StoresManagement.styles.css" asp-append-version="true" />
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <link href="@Url.Content("~/admin/css/styles.css")" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link rel="icon" type="image/x-icon" href="@Url.Content("~/image/iconweb.png")">
+    @RenderSection("Styles", false)
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Trang chủ</a>
+                        </li>
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+@*    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - StoresManagement - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        </div>
+    </footer>*@
+
+
+    <script>
+        function setCookie(name, value, days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        }
+
+        function getCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        var products = [];
+        var productCart = getCookie('ProductCart');
+      
+        if (productCart == null){
+            setCookie('ProductCart', "", 7);
+
+            var infoOrder = document.getElementById("infoOrder");
+            infoOrder.remove();
+
+            //var table = document.getElementById("table");
+            //table.remove();
+
+            //var orederTotal = document.getElementById("orederTotal");
+            //orederTotal.remove();
+
+            //var btnOrder = document.getElementById("btnOrder");
+            //btnOrder.remove();
+
+            document.getElementById("noneCart").textContent = "Không có sản phẩm nào trong giỏ hàng";
+
+           
+        }
+
+        if (productCart !== "" && productCart !== null) {
+            var products = productCart.split(".");
+            document.getElementById("productAmountCart").innerHTML = "(" + products.length + ")";
+        }
+
+
+
+        function addToCart(productID) {
+            var instock = parseInt(document.getElementById("UnitInStock").textContent);
+
+            var products = [];
+            var productCart = getCookie('ProductCart');
+            console.log(productCart);
+
+            if (productCart === null || productCart === "") {
+                products.push(productID + '-' + 1)
+                console.log(products.length)
+                setCookie('ProductCart', products[0], 7);
+            }
+            else {
+                var products = productCart.split(".");
+                let flag = 0;
+                for (let i = 0; i < products.length; i++) {
+                    var p = products[i].split("-")
+                    if (parseInt(p[0]) === productID) {
+                        if (instock - parseInt(p[1]) < 0){
+                            alert("Không còn hàng");
+                            return false;
+                        }
+                        var count = parseInt(p[1]) + 1;
+                        products[i] = p[0] + "-" + count;
+                        flag = 1;
+                    }
+                }
+                if (flag === 0) {
+                    products.push(productID + '-' + 1)
+                }
+            }
+            console.log(products.length)
+            if (products.length > 1) {
+                setCookie('ProductCart', products.join("."), 7);
+            }
+
+            document.getElementById("productAmountCart").innerHTML = "(" + products.length + ")";
+
+            alert("Add productID:" + productID + " successfully.")
+            return true;
+        }
+
+    </script>
+
+    <script src="~/js/signalr.js"></script>
+    <script src="~/js/OrdersRealTime.js"></script>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="@Url.Content("~/admin/js/scripts.js")"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+    <script src="@Url.Content("~/admin/js/datatables-simple-demo.js")"></script>
+    <script src="@Url.Content("~/js/site.js")"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,113 @@
+﻿@using Spending_Web.Models;
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+<canvas id="analysisRevenue" style="width:100%;max-width:600px">
+</canvas>
+
+<canvas id="analysisSpend" style="width:100%;max-width:600px">
+</canvas>
+
+<canvas id="chartPie" style="width:100%;max-width:500px">
+</canvas>
+
+<script>
+    var currentTime = new Date();
+
+    var ListRevenueMonthly = @Html.Raw(Json.Serialize(ViewData["ListRevenueMonthly"]));
+    console.log(ListRevenueMonthly);
+    var listMonth = [];
+    var listAmountRevenue = [];
+    for (let i = 0; i < ListRevenueMonthly.length; i++) {
+        listMonth.push(ListRevenueMonthly[i].month);
+        listAmountRevenue.push(ListRevenueMonthly[i].amountRevenue);
+    }
+
+    for(let i = 1; i <=12; i++){
+        if (!listMonth.includes(i)) {
+            listAmountRevenue.splice(i - 1, 0, 0);
+        }
+    }
+
+    var xValues = [1,2,3,4,5,6,7,8,9,10,11,12];
+    var yValues = listAmountRevenue;
+    var barColors = ["green", "red", "darkolivegreen", "cyan", "teal", "blue", "violet", "indigo", "pink", "lightgray", "sandy brown"];
+
+    new Chart("analysisRevenue", {
+        type: "bar",
+        data: {
+            labels: xValues,
+            datasets: [{
+                backgroundColor: barColors,
+                data: yValues
+            }]
+        },
+        options: {
+            legend: { display: false },
+            title: {
+                display: true,
+                text: "Bảng báo cáo doanh thu hàng tháng năm " + currentTime.getFullYear()
+            }
+        }
+    });
+
+    var ListSpendMonthly = @Html.Raw(Json.Serialize(ViewData["ListSpendMonthly"]));
+    var listMonth = [];
+    var listAmountSpend = [];
+    for (let i = 0; i < ListSpendMonthly.length; i++) {
+        listMonth.push(ListSpendMonthly[i].month);
+        listAmountSpend.push(ListSpendMonthly[i].amountSpend);
+    }
+
+    for (let i = 1; i <= 12; i++) {
+        if (!listMonth.includes(i)) {
+            listAmountSpend.splice(i - 1, 0, 0)
+        }
+    }
+
+    var xValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    var yValues = listAmountSpend;
+
+    new Chart("analysisSpend", {
+        type: "bar",
+        data: {
+            labels: xValues,
+            datasets: [{
+                backgroundColor: barColors,
+                data: yValues
+            }]
+        },
+        options: {
+            legend: { display: false },
+            title: {
+                display: true,
+                text: "Bảng báo cáo chi phí hàng tháng năm " + currentTime.getFullYear()
+            }
+        }
+    });
+
+
+    new Chart("chartPie", {
+        type: "pie",
+        data: {
+            labels: ["Doanh thu", "Chi phí"],
+            datasets: [{
+                backgroundColor: barColors,
+                data: [listAmountRevenue.reduce((a, b) => a + b, 0), listAmountSpend.reduce((a, b) => a + b, 0)]
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: "Báo cáo doanh thu chi phí "+ currentTime.getFullYear()
+            }
+        }
+    });
+
+
+</script>
+

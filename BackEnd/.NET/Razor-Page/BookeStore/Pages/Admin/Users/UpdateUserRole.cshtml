@@ -1,0 +1,39 @@
+﻿@page
+@model BookStore.Pages.Admin.Users.UpdateUserRoleModel
+@{
+    ViewData["Title"] = "Admin - Chỉnh sửa vai trò người dùng";
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<div class="col-lg-6 mt-5">
+    <div class="mb-3">
+        @{
+            string linkCurrent = Url.RouteUrl(ViewContext.RouteData.Values);
+            var e = linkCurrent.Split("/");
+            var l = "";
+            foreach (var i in e)
+            {
+                if (i != "")
+                {
+                    l += @i + "/";
+                    <a class="Breadcrumb" href="/@l">/@i</a>
+                }
+            }
+        }
+    </div>
+
+
+    <H2>Chỉnh sửa vai trò của User: @Model.user.UserName</H2>
+
+    <form method="post">
+
+        @foreach (var role in Model.roles)
+        {
+            <input type="checkbox" id="vehicle1" name="selectedValues" value="@role.Name" @((Model.user.Roles.Any(r => r.Name.Equals(role.Name))) ? "checked" : "")>
+            <label for="@role.Name">@role.Name</label>
+        }
+
+        <input type="submit" class="btn btn-info" value="Chỉnh sửa">
+    </form>
+</div>

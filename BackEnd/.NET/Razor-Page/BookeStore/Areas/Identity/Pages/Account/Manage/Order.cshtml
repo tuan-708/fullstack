@@ -1,0 +1,99 @@
+﻿@page
+@model BookStore.Areas.Identity.Pages.Account.Manage.OrderModel
+@{
+    ViewData["Title"] = "Các đơn đặt hàng";
+    ViewData["ActivePage"] = ManageNavPages.Order;
+}
+
+<div class="OrderDetail">
+    @foreach(var order in Model.Orders)
+    {
+        <div class="mb-4 shadow p-3 bg-white rounded m-4 pe-auto">
+            <div class="header d-flex">
+                <div class="col-4">Mã đơn hàng: <strong>@order.OrderId</strong></div>
+                <div class="col-6">Ngày tạo: <strong>@String.Format("{0:M/d/yyyy - HH:mm }", @order.OrderDate)</strong></div>
+                <div class="col-2">
+                    Trạng thái: 
+                    @if (order.Status != null)
+                    {
+                        var checkStatus = "";
+                        if (order.Status == "Xử lý") checkStatus = "warning";
+                        if (order.Status == "Đang giao") checkStatus = "info";
+                        if (order.Status == "Đã giao") checkStatus = "success";
+                        if (order.Status == "Đã hủy") checkStatus = "danger";
+
+                        <strong class="text-@checkStatus"> @order.Status</strong>
+                    }
+                </div>
+            </div>
+
+            <hr />
+            <div class="d-flex mb-3">
+                <div class="col-4">Ngày giao: <strong>@String.Format("{0:M/d/yyyy - HH:mm }", @order.RequiredDate)</strong></div>
+                <div class="col-4">Ngày nhận: <strong>@String.Format("{0:M/d/yyyy - HH:mm }", @order.ShippedDate)</strong></div>
+                <div class="col-4">Đơn vị ship: 
+                    @{
+                        foreach(var shipper in Model.Shippers)
+                        {
+                            if (shipper.ShipperId == @order.ShipVia)
+                            {
+                                <strong>@shipper.CompanyName</strong>
+                            }
+                        }
+                    }
+                </div>
+            </div>
+
+            <div class="d-flex mb-3">
+                <div class="col-4">Thành phố: <strong>@order.ShipCity</strong></div>
+                <div class="col-4">Khu vực: <strong>@order.ShipRegion</strong></div>
+                <div class="col-4">Mã Code: <strong>@order.ShipPostalCode</strong></div>
+            </div>
+
+            <div class="d-flex">
+                <div class="col-4">Đất nước: <strong>@order.ShipCountry</strong></div>
+                <div class="col-4">Số điện thoại: <strong>@order.PhoneNumber</strong></div>
+            </div>
+
+            <hr />
+
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Mã Sản phẩm</th>
+                        <th scope="col">đơn vị giá</th>
+                        <th scope="col">Số lượng</th>
+                        <th scope="col">giảm giá</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int i = 0;
+                    }
+                    @foreach (var od in @order.OrderDetails)
+                    {
+                        <tr>
+                            <th scope="row">@i</th>
+                            <td>@od.ProductId</td>
+                            <td>@od.UnitPrice</td>
+                            <td>@od.Quantity</td>
+                            <td>@od.Discount</td>
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
+            @if (order.Status == "Xử lý")
+            {
+                <div class="d-flex justify-content-end">
+                    <form method="post">
+                        <input type="hidden" name="oid" value="@order.OrderId">
+                        <button type="submit" onclick="return confirm('Bạn có muốn hủy đơn hàng @order.OrderId');" class="ms-lg-2 btn btn-danger">Hủy</button>
+                    </form>
+                </div>
+            }
+        </div>
+    }
+
+</div>

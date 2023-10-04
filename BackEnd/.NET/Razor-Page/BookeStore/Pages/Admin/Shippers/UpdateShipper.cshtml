@@ -1,0 +1,49 @@
+﻿@page
+@model BookStore.Pages.Admin.Shippers.UpdateShipperModel
+@{
+}
+@section Styles {
+    <link href="@Url.Content("~/admin/css/admin.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/admin/css/admin-roles.css")" rel="stylesheet" type="text/css" />
+}
+
+<partial name="_StatusMessage" for="StatusMessage"/>
+<div class="col-lg-6 mt-5">
+    <div class="mb-3">
+        @{
+            string linkCurrent = Url.RouteUrl(ViewContext.RouteData.Values);
+            var e = linkCurrent.Split("/");
+            var l = "";
+            foreach (var i in e)
+            {
+                if (i != "")
+                {
+                    l += @i + "/";
+                    <a class="Breadcrumb" href="/@l">/@i</a>
+                }
+            }
+        }
+    </div>
+
+
+    <div class="row">
+        <form method="post" enctype="multipart/form-data">
+
+            <h5>Chỉnh sửa nhà vận chuyển:</h5>
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.CompanyName" class="form-control" aria-required="true" />
+                <label asp-for="Input.CompanyName" class="form-label"></label>
+                <span asp-validation-for="Input.CompanyName" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Phone" class="form-control" aria-required="true" />
+                <label asp-for="Input.Phone" class="form-label"></label>
+                <span asp-validation-for="Input.Phone" class="text-danger"></span>
+            </div>
+
+            <input type="submit" class="btn btn-info" value="Chỉnh sửa" />
+        </form>
+    </div>
+</div>

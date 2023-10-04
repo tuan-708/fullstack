@@ -1,0 +1,158 @@
+﻿@page
+@model BookStore.Pages.ViewCartModel
+@{
+    ViewData["Title"] = "Trang giỏ hàng";
+}
+<partial name="_StatusMessage" for="StatusMessage"/>
+<div class="row">
+    <h5 id="message"></h5>
+
+    <h5 id="noneCart"></h5>
+</div>
+
+@if (Model.Products.Count > 0)
+{
+    <div id="infoOrder" class="row">
+        <table id="table" style="width:100%; border:1px;">
+            <tr>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Category Name</th>
+                <th>Price</th>
+                <th>Amount</th>
+                <th>Total</th>
+                <th>Acctions</th>
+            </tr>
+            @foreach (var p in Model.Products)
+            {
+                <tr id="row-@p.ProductId">
+                    <td>@p.ProductId</td>
+                    <td>@p.ProductName</td>
+                    <td>@p.Category.CategoryName</td>
+                    <td>@String.Format("{0:#,##0}",@p.UnitPrice) VNĐ</td>
+                    <td>@p.UnitsOnOrder</td>
+                    <td>
+                        @String.Format("{0:#,##0}", (p.UnitPrice * p.UnitsOnOrder)) VNĐ
+                    </td>
+                    <td>
+
+                        <button type="button" class="btn btn-danger addToCart" data-id="@p.ProductId" onclick="removeToCart(@p.ProductId)">Remove</button>
+                    </td>
+                </tr>
+            }
+        </table>
+        <h5 id="orederTotal" class="mt-3 mb-3">Tổng giá trị đơn hàng: <strong> @String.Format("{0:#,##0}", @Model.OrderTotal) VNĐ</strong></h5>
+
+        <h5>Thông tin vận chuyển:</h5>
+        <form method="post">
+            <div class="row mt-3">
+
+                <div class="col-6">
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" />
+                        <label asp-for="Input.PhoneNumber" class="form-label"></label>
+                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.ShipAddress" class="form-control" aria-required="true" />
+                        <label asp-for="Input.ShipAddress" class="form-label"></label>
+                        <span asp-validation-for="Input.ShipAddress" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.ShipCity" class="form-control" aria-required="true" />
+                        <label asp-for="Input.ShipCity" class="form-label"></label>
+                        <span asp-validation-for="Input.ShipCity" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.ShipRegion" class="form-control" aria-required="true" />
+                        <label asp-for="Input.ShipRegion" class="form-label"></label>
+                        <span asp-validation-for="Input.ShipRegion" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.ShipPostalCode" class="form-control" aria-required="true" />
+                        <label asp-for="Input.ShipPostalCode" class="form-label"></label>
+                        <span asp-validation-for="Input.ShipPostalCode" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.ShipCountry" class="form-control" aria-required="true" />
+                        <label asp-for="Input.ShipCountry" class="form-label"></label>
+                        <span asp-validation-for="Input.ShipCountry" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <button id="btnOrder" type="submit" class="btn btn-info col-3 align-items-lg-end mb-3" onclick="ClickOrder()">Đặt hàng</button>
+            </div>
+
+        </form>
+    </div>
+}
+else
+{
+    <h5>Không có sản phẩm nào trong giỏ hàng</h5>
+}
+
+<script>
+
+    function deleteCookie(cookieName) {
+        // Set the cookie's expiration date to the past
+        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    }
+
+    function removeToCart(productID) {
+        var products = [];
+        var productCart = getCookie('ProductCart');
+        if (productCart !== "") {
+            products = productCart.split(".");
+            for (let i = 0; i < products.length; i++) {
+                var p = products[i].split("-")
+                if (parseInt(p[0]) === productID) {
+                    products.splice(i, 1);
+
+                    var row = document.getElementById("row-" + p[0]);
+                    row.remove();
+
+                    if(products.length == 0){
+                        var table = document.getElementById("table");
+                        table.remove();
+
+                        var orederTotal = document.getElementById("orederTotal");
+                        orederTotal.remove();
+
+                        var btnOrder = document.getElementById("btnOrder");
+                        btnOrder.remove();
+
+                        document.getElementById("message").textContent += "Không có sản phẩm nào trong giỏ hàng";
+                    }
+                }
+            }
+        }
+        else {
+            return
+        }
+
+        if (products.length > 1){
+            setCookie('ProductCart', products.join("."), 7);
+        } 
+        if (products.length == 1) {
+            setCookie('ProductCart', products[0], 7);
+        } 
+        if(products.length == 0){
+            setCookie('ProductCart', "", 7);
+        }
+
+        document.getElementById("productAmountCart").innerHTML = "(" + products.length + ")";
+
+        alert("Remove productID:" + productID + " successfully.");
+
+
+    }
+</script>

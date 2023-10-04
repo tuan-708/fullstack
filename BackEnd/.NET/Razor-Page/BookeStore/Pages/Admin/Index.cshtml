@@ -1,0 +1,81 @@
+﻿@page
+@model StoreManagement.Pages.Admin.IndexModel
+@{
+    Layout = "_LayoutAdmin.cshtml";
+}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+<div class="row">
+    <div class="row d-flex p-5">
+        <section class="col-6">
+            <canvas id="analysisRevenue" style="width:100%;max-width:600px">
+            </canvas>
+
+            <div>Danh thu ngày hôm nay: <strong> @String.Format("{0:#,##0}", ViewData["RevenueDayly"]) VNĐ</strong> </div>
+
+            <div>Các sản phẩm đã bán trong ngày hôm nay:</div>
+            @foreach (var po in Model.orderproductonday)
+            {
+                <div>Sản phẩm: <strong>@po.ProductID</strong> - Số lượng: <strong>@po.Amount</strong></div>
+            }
+            
+        </section>
+        <section class="col-6">
+            <div class="row">
+                <section class="col-6">
+                    <div>Số lượng người dùng: <strong>@Model.Users.Count</strong></div>
+                    <div>Số lượng người mới (tháng):</div>
+                    <div>Số lượng tài khoản bị cấm: <strong>@Model.countBand</strong></div>
+                 
+                </section>
+                <section class="col-6">
+                    <div>Số lượng sản phẩm:</div>
+                    <div>Số lượng người mới (tháng):</div>
+                    <div>Số lượng tài khoản bị cấm:</div>
+                </section>
+            </div>
+        </section>
+    </div>
+</div>
+
+<script>
+    var currentTime = new Date();
+
+    var ListRevenueMonthly = @Html.Raw(Json.Serialize(ViewData["ListRevenueMonthly"]));
+    console.log(ListRevenueMonthly)
+    var listMonth = [];
+    var listAmountRevenue = [];
+    for (let i = 0; i < ListRevenueMonthly.length; i++) {
+        listMonth.push(ListRevenueMonthly[i].month);
+        listAmountRevenue.push(ListRevenueMonthly[i].amount);
+    }
+
+    for (let i = 1; i <= 12; i++) {
+        if (!listMonth.includes(i)) {
+            listAmountRevenue.splice(i - 1, 0, 0);
+        }
+    }
+
+    var xValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    var yValues = listAmountRevenue;
+    var barColors = ["green", "red", "darkolivegreen", "cyan", "teal", "blue", "violet", "indigo", "pink", "lightgray", "sandy brown"];
+
+    new Chart("analysisRevenue", {
+        type: "bar",
+        data: {
+            labels: xValues,
+            datasets: [{
+                backgroundColor: barColors,
+                data: yValues
+            }]
+        },
+        options: {
+            legend: { display: false },
+            title: {
+                display: true,
+                text: "Bảng báo cáo doanh thu hàng tháng năm " + currentTime.getFullYear()
+            }
+        }
+    });
+
+</script>

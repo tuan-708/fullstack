@@ -1,0 +1,118 @@
+﻿@page
+@model BookStore.Pages.Admin.Products.IndexModel
+@{
+    ViewData["Title"] = "Admin - Danh sách sản phẩm";
+}
+
+@section Styles {
+    <link href="@Url.Content("~/admin/css/admin.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/admin/css/admin-roles.css")" rel="stylesheet" type="text/css" />
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="row mt-3">
+    <div class="col-md-12">
+        <div class="mb-3">
+            @{
+                string linkCurrent = Url.RouteUrl(ViewContext.RouteData.Values);
+                var e = linkCurrent.Split("/");
+                var l = "";
+                foreach (var i in e)
+                {
+                    if (i != "")
+                    {
+                        l += @i + "/";
+                        <a class="Breadcrumb" href="/@l">/@i</a>
+                    }
+                }
+            }
+        </div>
+
+
+        <div class="row">
+            <a class="btn btn-secondary ms-lg-2 col-2 align-items-lg-end mb-3" asp-page="./NewProduct">Tạo sản phẩm</a>
+        </div>
+
+        <div class="row">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    Danh sách thể loại
+                </div>
+                <div class="card-body">
+                    <table id="datatablesSimple">
+                        <thead>
+                            <tr>
+                                <th>Hình ảnh</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Tác giả</th>
+                                <th>Nhà xuất bản</th>
+                                <th>Thể loại</th>
+                                <th>Đơn giá</th>
+                                <th>SL trong kho</th>
+                                <th>Trạng thái</th>
+                                <th>Tác vụ</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Hình ảnh</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Tác giả</th>
+                                <th>Nhà xuất bản</th>
+                                <th>Thể loại</th>
+                                <th>Đơn giá</th>
+                                <th>SL trong kho</th>
+                                <th>Trạng thái</th>
+                                <th>Tác vụ</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            @foreach (var product in Model.products)
+                            {
+                                <tr>
+                                    <td>
+                                        @if (product.ProductImages.Count > 0)
+                                        {
+                                            <img style="max-width: 100px; /* Kích thước tối đa của ảnh */
+                                            max-height: 100px;
+                                            width: auto;
+                                            height: auto;" src="/uploads/@product.ProductImages.ElementAt(0).ProductImage1" />
+                                        }
+                                        else
+                                        {
+                                            <img style="max-width: 100px; /* Kích thước tối đa của ảnh */
+                                                        max-height: 100px;
+                                                        width: auto;
+                                                        height: auto;" src="/image/null.png" />
+                                        }
+
+                                    </td>
+                                    <td>@product.ProductName</td>
+                                    <td>@product.Author</td>
+                                    <td>@product.Supplier.CompanyName</td>
+                                    <td>@product.Category.CategoryName</td>
+                                    <td>
+                                        @String.Format("{0:#,##0}", product.UnitPrice) VNĐ
+                                    </td>
+                                    <td>@product.UnitsInStock</td>
+                                    <td>@product.Discontinued</td>
+                                    <td class="text-center">
+                                        <div class="d-flex">
+                                            <a class="btn btn-primary ms-lg-2 align-items-lg-end" asp-page="./UpdateProduct" asp-route-pid="@product.ProductId">Chỉnh sửa</a>
+
+                                            <form method="post">
+                                                <input type="hidden" name="pid" value="@product.ProductId">
+                                                <button type="submit" onclick="return confirm('Bạn có muốn xóa thể loại @product.ProductId');" class="ms-lg-2 btn btn-danger">Xóa</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

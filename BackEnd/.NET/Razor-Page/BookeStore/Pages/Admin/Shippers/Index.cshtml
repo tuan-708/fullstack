@@ -1,0 +1,86 @@
+﻿@page
+@model BookStore.Pages.Admin.Shippers.IndexModel
+
+@{
+    ViewData["Title"] = "Admin - Danh sách đơn vị vận chuyển";
+}
+
+@section Styles {
+    <link href="@Url.Content("~/admin/css/admin.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/admin/css/admin-roles.css")" rel="stylesheet" type="text/css" />
+}
+
+<div class="row mt-3">
+    <div class="col-md-12">
+        <partial name="_StatusMessage" for="StatusMessage" />
+        <div class="mb-3">
+            @{
+                string linkCurrent = Url.RouteUrl(ViewContext.RouteData.Values);
+                var e = linkCurrent.Split("/");
+                var l = "";
+                foreach (var i in e)
+                {
+                    if (i != "")
+                    {
+                        l += @i + "/";
+                        <a class="Breadcrumb" href="/@l">/@i</a>
+                    }
+                }
+            }
+        </div>
+
+
+        <div class="row">
+            <a class="btn btn-secondary ms-lg-2 col-2 align-items-lg-end mb-3" asp-page="./NewShipper">Tạo nhà vận chuyển</a>
+        </div>
+
+
+        <div class="col-10">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    Danh sách thể loại
+                </div>
+                <div class="card-body">
+                    <table id="datatablesSimple">
+                        <thead>
+                            <tr>
+                                <th>Tên công ty</th>
+                                <th>Tên số điện thoại</th>
+                                <th>Tác vụ</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Tên công ty</th>
+                                <th>Tên số điện thoại</th>
+                                <th>Tác vụ</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            @foreach (var shipper in Model.Shippers)
+                            {
+                                <tr>
+                                    <td>@shipper.CompanyName</td>
+                                    <td>@shipper.Phone</td>
+                                    <td class="text-center">
+                                        <div class="d-flex">
+                                            <a class="btn btn-primary ms-lg-2 align-items-lg-end" asp-page="./UpdateShipper" asp-route-sid="@shipper.ShipperId">Chỉnh sửa</a>
+
+                                            <form method="post">
+                                                <input type="hidden" name="sid" value="@shipper.ShipperId">
+                                                <button type="submit" onclick="return confirm('Bạn có muốn xóa đơn vị vận chuyển @shipper.CompanyName ');" class="ms-lg-2 btn btn-danger">Xóa</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

@@ -1,0 +1,45 @@
+﻿@page
+@model StoreManagement.Pages.Admin.Users.Roles.EditModel
+@{
+    ViewData["Title"] = "Admin - Chỉnh sửa vai trò";
+}
+
+<div class="row mt-3">
+    <div class="col-md-12">
+        <partial name="_StatusMessage" for="StatusMessage" />
+
+        <div class="mb-3">
+            @{
+                string linkCurrent = Url.RouteUrl(ViewContext.RouteData.Values);
+                var e = linkCurrent.Split("/");
+                var l = "";
+                foreach (var i in e)
+                {
+                    if (i != "")
+                    {
+                        l += @i + "/";
+                        <a class="Breadcrumb" href="/@l">/@i</a>
+                    }
+                }
+            }
+        </div>
+
+
+        <div class="col-md-4">
+            <form method="post">
+                <h5>Chỉnh sửa 1 vai trò</h5>
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Name" class="form-control" aria-required="true" placeholder="admin" />
+                    <label asp-for="Input.Name" class="form-label"></label>
+                    <span asp-validation-for="Input.Name" class="text-danger"></span>
+                </div>
+                <button type="submit" class="w-100 btn btn-lg btn-primary">Chỉnh sửa</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

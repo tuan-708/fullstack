@@ -1,0 +1,220 @@
+﻿@page
+@model BookStore.Pages.Admin.Products.Product.UpdateProductModel;
+@{
+    ViewData["Title"] = "Admin - Chỉnh sửa sản phẩm";
+}
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+@section Styles {
+    <link href="@Url.Content("~/admin/css/admin.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/admin/css/admin-roles.css")" rel="stylesheet" type="text/css" />
+}
+
+<script src="@Url.Content("~/tinymce/tinymce.min.js")"></script>
+
+<partial name="_StatusMessage" for="StatusMessage"/>
+
+<div class="col-lg-6 mt-5">
+    <div class="col-md-12">
+        <div class="mb-3">
+            @{
+                string linkCurrent = Url.RouteUrl(ViewContext.RouteData.Values);
+                var e = linkCurrent.Split("/");
+                var l = "";
+                foreach (var i in e)
+                {
+                    if (i != "")
+                    {
+                        l += @i + "/";
+                        <a class="Breadcrumb" href="/@l">/@i</a>
+                    }
+                }
+            }
+        </div>
+
+        <div class="row">
+            <form method="post" enctype="multipart/form-data">
+
+                <h5>Chỉnh sửa Sản phẩm:</h5>
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.ProductName" class="form-control" aria-required="true" />
+                    <label asp-for="Input.ProductName" class="form-label"></label>
+                    <span asp-validation-for="Input.ProductName" class="text-danger"></span>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-5">
+                        <label>Thể loại:</label>
+                        <select class="form-control selectCategory" asp-for="Input.CategoryId">
+                            @foreach (var category in Model.categories)
+                            {
+                                <option value="@category.CategoryId">@category.CategoryName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-5">
+                        <label>Nhà cung cấp:</label>
+                        <select class="form-control selectSupplier" asp-for="Input.SupplierId">
+                            @foreach (var supplier in Model.suppliers)
+                            {
+                                <option value="@supplier.SupplierId">@supplier.CompanyName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-floating mb-3 mt-3">
+                    <input asp-for="Input.Author" class="form-control" aria-required="true" />
+                    <label asp-for="Input.Author" class="form-label"></label>
+                    <span asp-validation-for="Input.Author" class="text-danger"></span>
+                </div>
+
+                <textarea id="describe" asp-for="Input.Describe"></textarea>
+            
+                <div class="form-floating mb-3 mt-3">
+                    <input asp-for="Input.QuantityPerUnit" class="form-control" aria-required="true" />
+                    <label asp-for="Input.QuantityPerUnit" class="form-label"></label>
+                    <span asp-validation-for="Input.QuantityPerUnit" class="text-danger"></span>
+                </div>
+            
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.UnitPrice" class="form-control" aria-required="true" />
+                    <label asp-for="Input.UnitPrice" class="form-label"></label>
+                    <span asp-validation-for="Input.UnitPrice" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.UnitsInStock" class="form-control" aria-required="true" />
+                    <label asp-for="Input.UnitsInStock" class="form-label"></label>
+                    <span asp-validation-for="Input.UnitsInStock" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.UnitsOnOrder" class="form-control" aria-required="true" />
+                    <label asp-for="Input.UnitsOnOrder" class="form-label"></label>
+                    <span asp-validation-for="Input.UnitsOnOrder" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.ReorderLevel" class="form-control" aria-required="true" />
+                    <label asp-for="Input.ReorderLevel" class="form-label"></label>
+                    <span asp-validation-for="Input.ReorderLevel" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="checkbox" checked asp-for="Input.Discontinued"/> Trạng thái
+                </div>
+      
+
+                <input type="file" name="postedFiles" class="form-control mb-3" multiple onchange="loadFile(event)" />
+
+                <img id="output" style="max-width: 200px; /* Kích thước tối đa của ảnh */
+                                        max-height: 200px;
+                                        width: auto;
+                                        height: auto;" />
+                <div id="images" class="gridImge">
+                    @if(Model.uploadedFiles.Count > 0)
+                    {
+                        @foreach (var i in Model.uploadedFiles)
+                        {
+                            <img src="/uploads/@i" style="max-width: 200px; max-height: 200px; width: auto; height: auto; margin: 10px;"></img>
+                        }
+                    }
+
+                </div>
+
+                <hr />
+                <input type="submit" class="btn btn-info" value="Chỉnh sửa" />
+                <script>
+                    $('.selectSupplier').select2();
+                    $('.selectCategory').select2();
+
+                    var loadFile = function (event) {
+                        let element = document.getElementById("images");
+                        while (element.firstChild) {
+                            element.removeChild(element.firstChild);
+                        }
+
+                        for (let i = 0; i < event.target.files.length; i++) {
+                            const para = document.createElement("img");
+                            para.style = "max-width: 200px; max-height: 200px; width: auto; height: auto; margin: 10px;";
+                            para.className = "item";
+                            para.src = URL.createObjectURL(event.target.files[i]);
+                            para.onload = function () {
+                                URL.revokeObjectURL(output.src)
+                            }
+                            document.getElementById("images").appendChild(para)
+                        }
+                    };
+                </script>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    tinymce.init({
+        selector: '#describe',
+        plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
+        menubar: 'file edit view insert format tools table help',
+        toolbar: 'undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+        toolbar_sticky: true,
+        autosave_ask_before_unload: true,
+        autosave_interval: '30s',
+        autosave_prefix: '{path}{query}-{id}-',
+        autosave_restore_when_empty: false,
+        autosave_retention: '2m',
+        image_advtab: true,
+        link_list: [
+            { title: 'My page 1', value: 'https://www.codexworld.com' },
+            { title: 'My page 2', value: 'http://www.codexqa.com' }
+        ],
+        image_list: [
+            { title: 'My page 1', value: 'https://www.codexworld.com' },
+            { title: 'My page 2', value: 'http://www.codexqa.com' }
+        ],
+        image_class_list: [
+            { title: 'None', value: '' },
+            { title: 'Some class', value: 'class-name' }
+        ],
+        importcss_append: true,
+        file_picker_callback: (callback, value, meta) => {
+            /* Provide file and text for the link dialog */
+            if (meta.filetype === 'file') {
+                callback('https://www.google.com/logos/google.jpg', { text: 'My text' });
+            }
+
+            /* Provide image and alt text for the image dialog */
+            if (meta.filetype === 'image') {
+                callback('https://www.google.com/logos/google.jpg', { alt: 'My alt text' });
+            }
+
+            /* Provide alternative source and posted for the media dialog */
+            if (meta.filetype === 'media') {
+                callback('movie.mp4', { source2: 'alt.ogg', poster: 'https://www.google.com/logos/google.jpg' });
+            }
+        },
+        templates: [
+            { title: 'New Table', description: 'creates a new table', content: '<div class="mceTmpl"><table width="98%%"  border="0" cellspacing="0" cellpadding="0"><tr><th scope="col"> </th><th scope="col"> </th></tr><tr><td> </td><td> </td></tr></table></div>' },
+            { title: 'Starting my story', description: 'A cure for writers block', content: 'Once upon a time...' },
+            { title: 'New list with dates', description: 'New List with dates', content: '<div class="mceTmpl"><span class="cdate">cdate</span><br><span class="mdate">mdate</span><h2>My List</h2><ul><li></li><li></li></ul></div>' }
+        ],
+        template_cdate_format: '[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]',
+        template_mdate_format: '[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]',
+        height: 400,
+        image_caption: true,
+        quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+        noneditable_class: 'mceNonEditable',
+        toolbar_mode: 'sliding',
+        contextmenu: 'link image table',
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+    });
+</script>
