@@ -3,3 +3,5 @@ npx create-expo-app LoginForm
 npx react-native@latest init NavDemo
 
 npm install @react-navigation/native
+
+redux saga

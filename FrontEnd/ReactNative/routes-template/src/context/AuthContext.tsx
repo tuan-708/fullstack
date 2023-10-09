@@ -17,7 +17,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const [user, setUser] = useState(false);
 
   function signIn() {
-    setUser(true);
+    setUser(false);
   }
 
   return (

@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { Button, View, StyleSheet, TextInput, TouchableOpacity, Text, Image, Alert } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LinearGradient from 'react-native-linear-gradient';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function LoginScreen({ navigation }) {
+
+    
     const [getPassword, setPassword] = useState('');
     const [getEmail, setEmail] = useState('');
     const [isSecure, setIsSecure] = useState(true);
@@ -16,12 +16,14 @@ function LoginScreen({ navigation }) {
 
     const handleSignIn = () => {
         if (getEmail == "admin" && getPassword == "1234") {
+            AsyncStorage.setItem('name', 'Vũ Tuấn');
+
             Alert.alert('Thông báo', `Xin chào:  ${getEmail} đã đăng nhập thành công.`, [
                 { text: 'OK', onPress: () => {navigation.navigate('Home', {email: getEmail})}},
             ]);
         }else{
             Alert.alert('Thông báo', `Tài khoản của bạn là: \n Email:  ${getEmail} \n Password: ${getPassword}`, [
-                { text: 'OK', onPress: () => console.log('Đăng nhập thành công.') },
+                { text: 'OK', onPress: () => console.log('Đăng nhập không thành công.') },
             ]);
         }
     }

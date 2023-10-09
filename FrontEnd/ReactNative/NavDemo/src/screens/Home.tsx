@@ -1,18 +1,25 @@
-import * as React from 'react';
-import { Button, View, Text } from 'react-native';
+import React, {useState} from 'react';
+import { View, Text,  } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import App from '../../App';
-import { useRoute } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Tab = createBottomTabNavigator();
 
 function InfoScreen({ route }) {
   const { email } = route.params;
+  const [getName, setName] = useState('');
+  AsyncStorage.getItem('name').then(value => {
+    if(value != null){
+      setName(value);
+    }
+  })
   
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       
       <Text>Infor user {email}</Text>
+
+      <Text>Infor user {getName}</Text>
     </View>
   );
 }
