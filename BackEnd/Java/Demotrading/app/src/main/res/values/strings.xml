@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">MoneyManagement</string>
+    <string name="email">Email...</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="Fragment_Top_Coin">Coin Top</string>
+    <string name="Fragment_Favourite_Coin">Coin Favourite</string>
+    <string name="Fragment_Popular_Coin">Coin Popular</string>
+    <string name="Fragment_Price_Increase_Coin">Coin Price Increase</string>
+    <string name="Fragment_Price_Decrease_Coin">Coin Price Decrease</string>
+    <string name="Action_Home">Home</string>
+    <string name="Action_Market">Market</string>
+    <string name="Action_Money_Management">Money Management</string>
+    <string name="Action_Follow_Wallet">Follow Wallet</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="coingeckoLink"><a href="https://www.coingecko.com/vi">https://www.coingecko.com/vi</a></string>
+    <string name="coinmarketcapLink"><a href="https://coinmarketcap.com/vi/">https://coinmarketcap.com/vi/</a></string>
+    <string name="CZLink"><a href="https://twitter.com/cz_binance">https://twitter.com/cz_binance</a></string>
+    <string name="SamLink"><a href="https://twitter.com/SBF_FTX">https://twitter.com/SBF_FTX</a></string>
+    <string name="VitalikLink"><a href="https://twitter.com/VitalikButerin">https://twitter.com/VitalikButerin</a></string>
+    <string name="ElonMuskLink"><a href="https://twitter.com/elonmusk">https://twitter.com/elonmusk</a></string>
+    <string name="BinanceLink"><a href="https://www.binance.com/vi">https://www.binance.com/vi</a></string>
+    <string name="MexcLink"><a href="https://www.mexc.com/">https://www.mexc.com/</a></string>
+    <string name="BybitLink"><a href="https://www.bybit.com/vi-VN/">https://www.bybit.com/vi-VN/</a></string>
+    <string name="IvanOnTechLink"><a href="https://www.youtube.com/channel/UCrYmtJBtLdtm2ov84ulV-yg">https://www.youtube.com/channel/UCrYmtJBtLdtm2ov84ulV-yg</a></string>
+    <string name="TheCryptoLarkLink"><a href="https://www.youtube.com/channel/UCl2oCaw8hdR_kbqyqd2klIA">https://www.youtube.com/channel/UCl2oCaw8hdR_kbqyqd2klIA</a></string>
+    <string name="DataDashLink"><a href="https://www.youtube.com/channel/UCCatR7nWbYrkVXdxXb4cGXw">https://www.youtube.com/channel/UCCatR7nWbYrkVXdxXb4cGXw</a></string>
+    <string name="AndreasAntonopoulosLink"><a href="https://www.youtube.com/channel/UCJWCJCWOxBYSi5DhCieLOLQ">https://www.youtube.com/channel/UCJWCJCWOxBYSi5DhCieLOLQ</a></string>
+    <string name="CoinBureauLink"><a href="https://www.youtube.com/channel/UCqK_GSMbpiV8spgD3ZGloSw">https://www.youtube.com/channel/UCqK_GSMbpiV8spgD3ZGloSw</a></string>
+    <string-array name="Time_Array">
+        <item>1d</item>
+        <item>4h</item>
+        <item>1h</item>
+        <item>15m</item>
+        <item>5m</item>
+    </string-array>
+</resources>

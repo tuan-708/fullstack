@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:cardCornerRadius="15dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="#F2212730">
+
+        <TextView
+            android:id="@+id/item_coin_name_mm"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginStart="35dp"
+            android:gravity="center"
+            android:text="BNB/USDT"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/item_coin_price_mm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="50dp"
+            android:text="358,5"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toTopOf="@+id/item_coin_price_V"
+            app:layout_constraintEnd_toStartOf="@+id/item_coin_percent_mm"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/item_coin_price_V"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="50dp"
+            android:text="9000000đ"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/item_coin_percent_mm"
+            app:layout_constraintTop_toBottomOf="@+id/item_coin_price_mm" />
+
+        <TextView
+            android:id="@+id/item_coin_percent_mm"
+            android:layout_width="68dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="35dp"
+            android:background="@drawable/shaperadius"
+            android:gravity="center"
+            android:text="+3,52%"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
