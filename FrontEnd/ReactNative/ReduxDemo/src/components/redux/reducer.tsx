@@ -1,4 +1,4 @@
-import { ADD_TO_CART, REMOVE_TO_CART } from "./constrants";
+import { ADD_TO_CART, REMOVE_TO_CART, SET_USER_DATA, USER_LIST } from "./constrants";
 const initialState: any = [];
 
 function removeObjectWithId(arr:any, id:any) {
@@ -20,6 +20,8 @@ export const reducer=(state=initialState, action:any)=>{
         case REMOVE_TO_CART:
             var current = removeObjectWithId(state, action.id)
             return current;
+        case SET_USER_DATA:
+            return [...state,action.data]
         default:
             return state;
     }
